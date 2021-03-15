@@ -105,7 +105,7 @@ async def on_guild_channel_update(before, after):
 @client.event
 async def on_member_update(before, after):
     global log_channel, guild
-    entry = await guild.audit_logs(action=discord.AuditLogAction.channel_update, limit=1).get()
+    entry = await guild.audit_logs(action=discord.AuditLogAction.member_update, limit=1).get()
     if len(before.roles) < len(after.roles):
         n = next(role for role in after.roles if role not in before.roles)
         x = '`01` - **Added** a role\n{}'.format(n)
