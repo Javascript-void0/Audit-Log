@@ -105,14 +105,6 @@ async def on_member_update(before, after):
     log_channel = client.get_channel(820718179918676018)
     guild = client.get_guild(805299220935999509)
     entry = await guild.audit_logs(action=discord.AuditLogAction.channel_update, limit=1).get()
-
-    if before.nick != after.nick:
-        if after.nick:
-            x = '`01` - Set their nickname to **{}**'.format(after.nick)
-            embed = discord.Embed(title='[+] Member Updated', description='{} updated **{}**\n{}'.format(entry.user.mention, before.mention, x))
-        else:
-            x = '`01` - **Removed** their nickname of **{}**'.format(before.nick)
-            embed = discord.Embed(title='[-] Member Updated', description='{} updated **{}**\n{}'.format(entry.user.mention, before.mention, x))
     if len(before.roles) < len(after.roles):
         n = next(role for role in after.roles if role not in before.roles)
         x = '`01` - **Added** a role\n{}'.format(n)
@@ -128,3 +120,13 @@ async def on_member_update(before, after):
  
 if __name__ == '__main__':
     client.run(TOKEN)
+
+'''
+    if before.nick != after.nick:
+        if after.nick:
+            x = '`01` - Set their nickname to **{}**'.format(after.nick)
+            embed = discord.Embed(title='[+] Member Updated', description='{} updated **{}**\n{}'.format(entry.user.mention, before.mention, x))
+        else:
+            x = '`01` - **Removed** their nickname of **{}**'.format(before.nick)
+            embed = discord.Embed(title='[-] Member Updated', description='{} updated **{}**\n{}'.format(entry.user.mention, before.mention, x))
+'''
