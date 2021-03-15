@@ -11,6 +11,9 @@ client = commands.Bot(command_prefix='.', intents=intents)
 client.remove_command('help')
 TOKEN = os.getenv("AUDIT_TOKEN")
 
+guild = client.get_guild(802565984602423367)
+log_channel = client.get_channel(820699203680468995)
+
 def get_dt():
     t = time.localtime()
     t = time.strftime("%I:%M %p", t)
@@ -40,7 +43,7 @@ async def on_ready():
 
 @client.event
 async def on_guild_channel_delete(channel):
-    log_channel = client.get_channel(820718179918676018)
+    global log_channel
     entry = await channel.guild.audit_logs(action=discord.AuditLogAction.channel_delete, limit=1).get()
     d,t = get_dt()
     embed = discord.Embed(title='[-] Channel Deleted', description='{} removed #{}'.format(entry.user.mention, channel.name))
@@ -49,7 +52,7 @@ async def on_guild_channel_delete(channel):
 
 @client.event
 async def on_guild_channel_create(channel):
-    log_channel = client.get_channel(820718179918676018)
+    global log_channel
     entry = await channel.guild.audit_logs(action=discord.AuditLogAction.channel_create, limit=1).get()
 
     if channel.type == discord.ChannelType.text:
@@ -92,8 +95,7 @@ async def on_guild_channel_update(before, after):
     if before.name != after.name:
         x = '`01` - Changed the name from **{}** to **{}**'.format(before.name, after.name)
     
-    log_channel = client.get_channel(820718179918676018)
-    guild = client.get_guild(805299220935999509)
+    global log_channel, guild
     entry = await guild.audit_logs(action=discord.AuditLogAction.channel_update, limit=1).get()
     embed = discord.Embed(title='[+] Channel Updated', description='{} made changes to **#{}**\n{}'.format(entry.user.mention, before, x))
     d,t = get_dt()
@@ -102,8 +104,7 @@ async def on_guild_channel_update(before, after):
 
 @client.event
 async def on_member_update(before, after):
-    log_channel = client.get_channel(820718179918676018)
-    guild = client.get_guild(805299220935999509)
+    global log_channel, guild
     entry = await guild.audit_logs(action=discord.AuditLogAction.channel_update, limit=1).get()
     if len(before.roles) < len(after.roles):
         n = next(role for role in after.roles if role not in before.roles)
