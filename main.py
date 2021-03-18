@@ -170,10 +170,6 @@ async def on_member_update(before, after):
     else:
         await log_channel.send(embed=embed)
 '''
-
-if __name__ == '__main__':
-    client.run(TOKEN)
-
 '''
     if before.nick != after.nick:
         if after.nick:
@@ -183,3 +179,7 @@ if __name__ == '__main__':
             x = '`01` - **Removed** their nickname of **{}**'.format(before.nick)
             embed = discord.Embed(title='[ - ] Member Updated', description='{} updated **{}**\n{}'.format(entry.user.mention, before.mention, x))
 '''
+
+if __name__ == '__main__':
+    client.run(TOKEN)
+
